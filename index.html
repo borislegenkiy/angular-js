@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test Task - JS</title>
+
+	<!-- JS BootStrap Files-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<!-- Angular JS BootStrap Files-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+	
+	<!-- My JS Files-->
+	<script src="js/script_bootstrap_js.js"></script>
+	<script src="js/script_angular_js.js"></script>
+
+	<!-- CSS Files-->
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+	<div class="wrapper">
+
+	<header class="header">
+		<div class="header_title_line1">Testing task for JavaScript - Level 2</div>
+		<div class="header_title_line2">
+			<p>Send application to calculate the current value of the portfolio securities.</p>
+			<p>The user adds data on how many shares he bought, at what cost, and what the current price.</p>
+			<p>On the basis of these data is based the calculation of income / loss and general statistics of the portfolio.</p>
+			<p>You must use: <span class="bold">angular.js</span>; allowed to use: <span class="bold">bootstrap</span>.</p>
+		</div>
+	</header>
+
+	<main class="content" ng-controller="ContentController">
+			<div class="content_header_text"><h1>Калькулятор портфеля ценных бумаг</h1></div>
+			
+			<div class="place_input_add_button">
+				<form name="answerForm">
+					<input type="text" class="form-control input_calcul f_left" id="name" required ng-pattern="/[a-zA-Zа-яА-Я0-9^ ]/"  ng-model="name" placeholder="Наименование акции">
+					<input type="text" class="form-control input_calcul f_left" id="cost" required ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" ng-model="cost" placeholder="Цена покупки">
+					<input type="text" class="form-control input_calcul f_left" id="count" required ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" ng-model="count" placeholder="Количество">
+					<input class="btn btn-default input_button f_left" type="submit" ng-click="AddClick(conts,answerForm)" value="Добавить">
+				</form>
+			</div>
+		
+			
+			<ul id="myTab" class="nav nav-tabs">
+			  <li class="active"><a href="#panel1">Все</a></li>
+			  <li><a href="#panel2">Доходные</a></li>
+			  <li><a href="#panel3">Убыточные</a></li>
+			  <li><a href="#panel4">Сводка</a></li>
+			</ul>
+			 
+			<div class="tab-content">
+			  <div id="panel1" class="tab-pane fade in active">
+				  <h3>Все</h3>
+				  <table class="table table-striped">
+					<thead style="{{show}}">
+						  <tr>
+							<th>Наименование</th>
+							<th>Средняя цена</th>
+							<th>Кол-во</th>
+							<th>Тек.цена</th>
+							<th>Доход/убыток</th>
+						  </tr>
+					</thead>
+					<tbody class="table_main">
+						<tr class="{{cont.style}}" ng-repeat="cont in conts" value="{{$index}}">
+							<td class="vertical-align">{{cont.name}}</td>
+							<td class="vertical-align">{{cont.cost}}</td>
+							<td class="vertical-align">{{cont.count}}</td>
+							<td class="vertical-align" add-button value="{{$index}}">{{cont.price}}<div class="holder"></div></td>
+							<td class="vertical-align" value="{{$index}}" ><div class="test">{{cont.incomeloss}}</div></td>
+						</tr>
+					</tbody>
+				  </table>
+			  </div>
+			  
+			  <div id="panel2" class="tab-pane fade">
+				<h3 style="{{show_profitable}}">Доходные</h3>
+				<table class="table table-striped" style="{{show_profitable}}">
+					<thead class="head_profitable">
+						  <tr>
+							<th>Наименование</th>
+							<th>Средняя цена</th>
+							<th>Кол-во</th>
+							<th>Тек.цена</th>
+							<th>Доход/убыток</th>
+						  </tr>
+					</thead>
+					<tbody class="profitable">
+						<tr class="{{cont.style}}" ng-repeat="cont in conts" value="{{$index}}">
+							<td class="vertical-align">{{cont.name}}</td>
+							<td class="vertical-align">{{cont.cost}}</td>
+							<td class="vertical-align">{{cont.count}}</td>
+							<td class="vertical-align" value="{{$index}}">{{cont.price}}</td>
+							<td class="vertical-align" value="{{$index}}"><div class="test">{{cont.incomeloss}}</div></td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			  <div id="panel3" class="tab-pane fade">
+				<h3 style="{{show_unprofitable}}">Убыточные</h3>
+				<table class="table table-striped" style="{{show_unprofitable}}">
+					<thead class="head_unprofitable">
+						  <tr>
+							<th>Наименование</th>
+							<th>Средняя цена</th>
+							<th>Кол-во</th>
+							<th>Тек.цена</th>
+							<th>Доход/убыток</th>
+						  </tr>
+					</thead>
+					<tbody class="unprofitable">
+						<tr class="{{cont.style}}" ng-repeat="cont in conts" value="{{$index}}">
+							<td class="vertical-align">{{cont.name}}</td>
+							<td class="vertical-align">{{cont.cost}}</td>
+							<td class="vertical-align">{{cont.count}}</td>
+							<td class="vertical-align" value="{{$index}}">{{cont.price}}</td>
+							<td class="vertical-align" value="{{$index}}"><div class="test">{{cont.incomeloss}}</div></td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			  <div id="panel4" class="tab-pane fade">
+				<h3 style="{{show_result}}">Сводка</h3>
+				<table class="table table-striped" style="{{show_result}}">
+					<tbody class="unprofitable">
+						<tr>
+							<td class="vertical-align">Всего бумаг</td>
+							<td class="vertical-align">{{conts[0].all}}</td>
+						</tr>
+						<tr>
+							<td class="vertical-align">Прибыльных</td>
+							<td class="vertical-align">{{conts[0].info}}</td>
+						</tr>
+						<tr>
+							<td class="vertical-align">Убыточных</td>
+							<td class="vertical-align">{{conts[0].danger}}</td>
+						</tr>
+						<tr>
+							<td class="vertical-align">Доход/Убыток</td>
+							<td class="vertical-align">{{conts[0].income_loss}}</td>
+						</tr>
+						<tr>
+							<td class="vertical-align">Текущая цена портфеля</td>
+							<td class="vertical-align">{{conts[0].price_portfolio}}</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<h3 style="{{show_result}}">Распределение стоимости портфеля</h3>
+				<table class="table table-striped" style="{{show_result}}">
+					<thead>
+						<tr>
+							<th>Наименование</th>
+							<th>Процент от стоимости портфеля</th>
+							<th>Стоимость</th>
+							<th>Доход/убыток</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="none" ng-repeat="cont in conts | orderBy: 'percent' : 'true' " value="{{$index}}">
+							<td class="vertical-align">{{cont.name}}</td>
+							<td class="vertical-align">{{cont.percent}}</td>
+							<td class="vertical-align">{{cont.cost_current}}</td>
+							<td class="vertical-align" value="{{$index}}">{{cont.income_loss_current}}</td>
+						</tr>
+					</tbody>
+				</table>
+			  </div>
+			</div>
+	</main>
+</div>
+
+<footer class="footer">
+	Footer
+</footer>
+</body>
+</html>
